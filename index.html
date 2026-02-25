@@ -38,7 +38,7 @@
             --font-head: 'Montserrat', sans-serif;
             --font-body: 'Bitter', serif;
             
-            --header-height: 70px; 
+            --header-height: 75px; /* Slightly increased for icon nav */
             --mobile-nav-height: 70px;
         }
 
@@ -62,7 +62,7 @@
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
 
-        /* --- 2. HEADER (Top Navbar) --- */
+        /* --- 2. HEADER (Top Navbar - Icon Style) --- */
         header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
             background: rgba(255, 255, 255, 0.98);
@@ -76,6 +76,7 @@
         .nav-container {
             width: 90%; max-width: 1200px; margin: 0 auto;
             display: flex; justify-content: space-between; align-items: center;
+            height: 100%;
         }
 
         .brand { 
@@ -86,27 +87,68 @@
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            flex-shrink: 0;
         }
         
         .brand i { font-size: 1.4rem; color: var(--accent); }
-        @media (min-width: 769px) { .brand { font-size: 1.1rem; } .brand i { font-size: 1.5rem; } }
 
-        /* Desktop Nav */
-        .desktop-nav { display: flex; gap: 5px; align-items: center; }
+        /* Desktop Nav - Redesigned to match Bottom Nav style */
+        .desktop-nav { 
+            display: flex; 
+            justify-content: flex-end; /* Push to right of brand */
+            align-items: center; 
+            height: 100%;
+            flex: 1;
+            padding-left: 20px;
+        }
         @media (max-width: 768px) { .desktop-nav { display: none; } }
 
-        .nav-item { position: relative; }
+        .nav-item { 
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            flex: 1; /* Spread items evenly */
+            max-width: 100px;
+        }
         
         .nav-link {
-            font-family: var(--font-head); font-weight: 600; font-size: 0.95rem;
-            color: var(--dark); padding: 10px 15px; cursor: pointer;
-            border-radius: 6px; transition: var(--trans);
+            font-family: var(--font-head); 
+            font-weight: 600; 
+            font-size: 0.75rem;
+            color: var(--dark); 
+            cursor: pointer;
+            transition: var(--trans);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
         }
-        .nav-link:hover, .nav-link.active { background: rgba(0,86,179,0.1); color: var(--primary); }
+        
+        .nav-link i {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+            color: var(--primary);
+            transition: var(--trans);
+        }
+        
+        .nav-link:hover, .nav-link.active { 
+            background: rgba(0,86,179,0.05); 
+            color: var(--primary); 
+        }
+        .nav-link:hover i, .nav-link.active i { 
+            color: var(--accent); 
+            transform: translateY(-2px);
+        }
 
-        /* Dropdown */
+        /* Dropdown for About (Desktop) */
         .dropdown-content {
-            display: none; position: absolute; top: 100%; left: 0;
+            display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             background-color: var(--white); min-width: 200px;
             box-shadow: var(--shadow-lg); border-radius: 8px;
             padding: 10px 0; z-index: 1001; animation: fadeIn 0.2s ease;
@@ -206,7 +248,6 @@
         /* --- 5. HERO SECTION --- */
         #home-hero {
             position: relative; height: 65vh; background-color: #003d80;
-            /* Using the original image provided to avoid random content */
             background-image: url('https://lh3.googleusercontent.com/sitesv/APaQ0SQeJZlGFYuPiqexrF6hAhpOoVqgAunAykm6swiM7Y3ExfgPbd4N6AoKPb-5zteXYscOs7L-xGYBkbu2YgGB5BK5sTobMbLlk8JPqL7aIR3gTj5fnRZCfskh_MYBQ512-vd_ud-qlguA4ankBib97TN3E8u3ymUGinGzLmcDDn9ZeYHxwO9XLGXePYk=w16383');
             background-size: cover; background-position: center;
             display: flex; align-items: center; justify-content: center; text-align: center; color: white;
@@ -289,11 +330,21 @@
         .vm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
         .vm-card { background: #f9f9f9; padding: 25px; border-radius: var(--radius); text-align: center; border-top: 4px solid var(--primary); }
         .vm-card h4 { color: var(--primary); font-family: var(--font-head); margin-bottom: 15px; font-size: 1.2rem; }
+        
+        /* Leadership Grid Enhanced */
         .leadership-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; text-align: center; margin-top: 30px; }
-        .leader-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 4px solid var(--accent); }
+        .leader-card { background: #fff; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--trans); border: 1px solid transparent; }
+        .leader-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .leader-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 4px solid var(--accent); transition: var(--trans); }
+        .leader-card:hover .leader-img { border-color: var(--primary); }
+        
         .list-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .list-item { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: var(--radius); display: flex; align-items: flex-start; gap: 15px; }
+        .list-item { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: var(--radius); display: flex; align-items: flex-start; gap: 15px; transition: var(--trans); cursor: pointer; }
+        .list-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
         .list-item i { color: var(--accent); font-size: 1.5rem; margin-top: 3px; }
+        .list-item-content { flex: 1; }
+        .list-item .view-details { font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-top: 8px; display: block; text-transform: uppercase; }
+        .list-item:hover .view-details { color: var(--accent); }
 
         /* --- 8. FOOTER & BOTTOM NAV --- */
         footer { background: var(--dark); color: #ccc; padding: 60px 0 30px; margin-top: auto; border-top: 5px solid var(--accent); }
@@ -319,16 +370,61 @@
         .b-nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
         .b-nav-item.active { color: var(--primary); }
 
-        /* --- MODAL --- */
+        /* --- MODALS --- */
+        /* Image Modal */
         .modal { position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         .modal.open { opacity: 1; }
         .modal-content { max-width: 90%; max-height: 90%; border-radius: 4px; }
         .close-modal { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; }
+
+        /* Info Modal (New) */
+        .info-modal {
+            position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s;
+            padding: 20px;
+        }
+        .info-modal.open { opacity: 1; }
+        .info-modal-box {
+            background: var(--white);
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .info-modal.open .info-modal-box { transform: scale(1); }
+        .info-modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .info-modal-header i { font-size: 1.5rem; color: var(--accent); }
+        .info-modal-header h3 { font-family: var(--font-head); margin: 0; }
+        .info-modal-body { padding: 25px; }
+        .info-modal-body p { margin-bottom: 15px; line-height: 1.6; }
+        .info-modal-close {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255,255,255,0.2); border: none;
+            width: 30px; height: 30px; border-radius: 50%;
+            color: white; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .info-modal-close:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
 
-    <!-- HEADER (Top Navbar) -->
+    <!-- HEADER (Top Navbar - Icon Style) -->
     <header>
         <div class="nav-container">
             <div class="brand" onclick="handleMobileNavClick('home')">
@@ -336,14 +432,37 @@
                 <span>FCC KABIRIA</span>
             </div>
             
-            <!-- Desktop Nav -->
+            <!-- Desktop Nav (Icon Style) -->
             <nav class="desktop-nav">
-                <div class="nav-item"><div class="nav-link" onclick="switchPage('home')">Home</div></div>
-                <div class="nav-item"><div class="nav-link" onclick="switchPage('sermons')">Sermons</div></div>
-                <div class="nav-item"><div class="nav-link" onclick="switchPage('events')">Events</div></div>
-                <div class="nav-item"><div class="nav-link" onclick="switchPage('gallery')">Gallery</div></div>
+                <div class="nav-item">
+                    <div class="nav-link active" onclick="switchPage('home')">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link" onclick="switchPage('sermons')">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Sermons</span>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link" onclick="switchPage('events')">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Events</span>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link" onclick="switchPage('gallery')">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </div>
+                </div>
                 <div class="nav-item dropdown">
-                    <div class="nav-link">About Us <i class="fas fa-chevron-down" style="font-size:0.7em; margin-left:5px;"></i></div>
+                    <div class="nav-link">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </div>
                     <div class="dropdown-content">
                         <a onclick="switchPage('about'); switchAboutTab('overview')">Overview</a>
                         <a onclick="switchPage('about'); switchAboutTab('leadership')">Leadership</a>
@@ -385,7 +504,7 @@
             </div>
         </div>
 
-        <!-- About Sub-Dropdown (Hidden by default) -->
+        <!-- About Sub-Dropdown -->
         <div class="mobile-about-dropdown" id="mobile-about-dropdown">
             <div class="mobile-menu-grid" style="padding-top: 0;">
                 <div class="mobile-icon-item" onclick="handleMobileNavClick('about', 'overview')">
@@ -408,7 +527,7 @@
         </div>
     </div>
 
-    <!-- MOBILE BOTTOM NAV (Quick Access) -->
+    <!-- MOBILE BOTTOM NAV -->
     <div class="mobile-bottom-nav">
         <div class="b-nav-item active" onclick="switchPage('home')">
             <i class="fas fa-home"></i>
@@ -479,7 +598,6 @@
                         <div class="btn btn-primary" onclick="switchPage('about')">Read More</div>
                     </div>
                     <div class="about-short-img">
-                        <!-- Using a static safe image to avoid random content -->
                         <img src="https://placehold.co/600x400/0056b3/ffffff?text=Church+Community" alt="Church Family">
                     </div>
                 </div>
@@ -488,7 +606,6 @@
             <section class="home-section" style="background-color: #fff; border-radius: var(--radius); max-width: 100%;">
                 <div style="max-width: 900px; margin: 0 auto;">
                     <h2 class="section-title">Latest Message</h2>
-                    <!-- LINK 1 ONLY -->
                     <div class="video-feature-container">
                         <iframe src="https://www.youtube.com/embed/eULnY0ttp5g?rel=0" title="Latest Sermon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
@@ -537,17 +654,14 @@
             <div class="home-section">
                 <h2 class="section-title">Sermon Archive</h2>
                 <div class="vm-grid">
-                    <!-- LINK 2 -->
                     <div class="sermon-card">
                         <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/9yXc4GwJ3_E?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">The Wisdom of Time</h3><p style="font-size:0.9rem; color:#666;">Unlocking divine seasons.</p></div>
                     </div>
-                    <!-- LINK 3 -->
                     <div class="sermon-card">
                         <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/AIp0fnJFY7k?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">Understanding God's Timing</h3><p style="font-size:0.9rem; color:#666;">Deep dive into the Word.</p></div>
                     </div>
-                    <!-- LINK 4 -->
                     <div class="sermon-card">
                         <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/fchI8TwZWGQ?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">Fixing Our Eyes on Christ</h3><p style="font-size:0.9rem; color:#666;">Focusing on Jesus.</p></div>
@@ -563,7 +677,6 @@
                 <div style="background: white; padding: 30px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow-sm);">
                     <h3 style="color: var(--primary); font-family: var(--font-head);">New Month Celebration</h3>
                     <p style="margin: 20px 0;">Join us this Sunday for a time of praise, worship, and a special lunch fellowship afterwards.</p>
-                    <!-- LINK 1 ONLY -->
                     <div class="video-feature-container" style="max-width: 800px; margin: 0 auto;">
                         <iframe src="https://www.youtube.com/embed/eULnY0ttp5g?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
@@ -597,6 +710,7 @@
                 </div>
             </div>
 
+            <!-- OVERVIEW -->
             <section id="about-overview" class="about-section-block active-block">
                 <div class="about-content-wrapper">
                     <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 20px; text-align: center;">Who We Are</h2>
@@ -619,101 +733,109 @@
                             <p>We uphold Integrity, Compassion, Excellence, and Faith in God as the pillars of our ministry and daily lives.</p>
                         </div>
                     </div>
-
-                    <div style="margin-top: 50px; border: 1px solid #eee; padding: 30px; border-radius: var(--radius);">
-                        <h3 style="text-align: center; font-family: var(--font-head); margin-bottom: 25px; color: var(--text-heading);">What We Believe</h3>
-                        <ul style="list-style: disc; padding-left: 20px; line-height: 2; font-size: 1rem;">
-                            <li><strong>The Bible:</strong> We believe the Bible is the inspired Word of God, authoritative and infallible.</li>
-                            <li><strong>The Trinity:</strong> We believe in one God revealed as Father, Son, and Holy Spirit.</li>
-                            <li><strong>Jesus Christ:</strong> We believe in the deity of Jesus Christ, His virgin birth, His sinless life, and His physical resurrection.</li>
-                            <li><strong>Salvation:</strong> We believe salvation is by grace through faith in Jesus Christ alone, not by works.</li>
-                        </ul>
-                    </div>
                 </div>
             </section>
 
+            <!-- LEADERSHIP (Enhanced) -->
             <section id="about-leadership" class="about-section-block">
                 <div class="about-content-wrapper">
                     <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Our Leadership</h2>
+                    <p style="text-align: center; margin-bottom: 30px; color: #666;">Click on a leader to view their profile.</p>
                     <div class="leadership-grid">
-                        <div>
+                        <!-- Leader 1 -->
+                        <div class="leader-card" onclick="openInfoModal('Rev. James Maina', '<p>Rev. James Maina is the Senior Pastor of Faith Celebration Centre Kabiria. With over 20 years of ministry experience, he is passionate about teaching the Word of God with clarity and power.</p><p><strong>Education:</strong> Bachelor of Theology, Masters in Divinity.</p><p><strong>Favorite Verse:</strong> Jeremiah 29:11</p>')">
                             <img src="https://placehold.co/200x200/0056b3/ffffff?text=Rev+James" alt="Rev James" class="leader-img">
                             <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Rev. James Maina</h4>
                             <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Senior Pastor</p>
+                            <span class="view-details">View Profile</span>
                         </div>
-                        <div>
+                        <!-- Leader 2 -->
+                        <div class="leader-card" onclick="openInfoModal('Rev. Naomi Maina', '<p>Rev. Naomi Maina co-pastors alongside her husband. She leads the Women\'s Ministry and counseling department, focusing on family restoration and prayer.</p><p><strong>Passion:</strong> Discipleship and Intercession.</p><p><strong>Contact:</strong> naomi@fcckabiria.org</p>')">
                             <img src="https://placehold.co/200x200/ffb703/ffffff?text=Rev+Naomi" alt="Rev Naomi" class="leader-img">
                             <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Rev. Naomi Maina</h4>
                             <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Co-Pastor</p>
+                            <span class="view-details">View Profile</span>
                         </div>
-                        <div>
-                            <img src="https://placehold.co/200x200/0056b3/ffffff?text=Elder" alt="Elder" class="leader-img">
-                            <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Elder John Doe</h4>
+                        <!-- Leader 3 (Updated Name) -->
+                        <div class="leader-card" onclick="openInfoModal('Elder Mzee Kimani', '<p>Elder Mzee Kimani serves as the Church Elder, providing oversight to church projects and community welfare. He is known for his wisdom and deep commitment to the church family.</p><p><strong>Role:</strong> Church Oversight & Welfare.</p><p><strong>Hobbies:</strong> Gardening and Community Mentorship.</p>')">
+                            <img src="https://placehold.co/200x200/0056b3/ffffff?text=Elder+Kimani" alt="Elder Mzee Kimani" class="leader-img">
+                            <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Elder Mzee Kimani</h4>
                             <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Church Elder</p>
+                            <span class="view-details">View Profile</span>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- DEPARTMENTS (Enhanced) -->
             <section id="about-departments" class="about-section-block">
                 <div class="about-content-wrapper">
                     <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Our Departments</h2>
+                    <p style="text-align: center; margin-bottom: 30px; color: #666;">Explore our departments and find where you can serve.</p>
                     <div class="list-grid">
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Music & Worship Ministry', '<p>The Music Ministry leads the congregation into the presence of God through praise and worship. We believe in excellence and spirit-filled ministration.</p><ul><li><strong>Practice:</strong> Saturdays at 4:00 PM</li><li><strong>Leader:</strong> Worship Director</li><li><strong>Requirements:</strong> Audition required for vocalists and instrumentalists.</li></ul>')">
                             <i class="fas fa-music"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Music & Worship Ministry</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Leading the congregation in praise and creating an atmosphere for God's presence.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Children\'s Ministry', '<p>Dedicated to teaching children the ways of the Lord in a fun, safe environment. We run Sunday School, Holiday Bible Clubs, and Teen mentorship.</p><ul><li><strong>Ages:</strong> 0 - 14 years</li><li><strong>Time:</strong> Sunday School during main service.</li><li><strong>Contact:</strong> children@fcckabiria.org</li></ul>')">
                             <i class="fas fa-child"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Children's Ministry</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Nurturing the next generation in the ways of the Lord with fun and biblical teaching.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Ushering & Hospitality', '<p>Our ushers ensure order and warmth during services. The hospitality team ensures every visitor feels at home and organizes church events.</p><ul><li><strong>Roles:</strong> Ushers, Greeters, Event Planners, Catering.</li><li><strong>Meeting:</strong> 1st Saturday of the month.</li></ul>')">
                             <i class="fas fa-users"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Ushering & Hospitality</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Ensuring order, comfort, and a warm welcome for everyone visiting the church.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Welfare & Outreach', '<p>We demonstrate the love of Christ through practical support to the needy, hospital visits, prison outreach, and community clean-ups.</p><ul><li><strong>Activities:</strong> Food drives, Hospital visits, Community Service.</li><li><strong>How to Join:</strong> Sign up at the info desk.</li></ul>')">
                             <i class="fas fa-hands-helping"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Welfare & Outreach</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Serving the community needs through charity and support programs.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- PROGRAMS (Enhanced) -->
             <section id="about-programs" class="about-section-block">
                 <div class="about-content-wrapper">
                     <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Weekly Programs</h2>
                     <div class="list-grid">
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Tuesday Bible Study', '<p>An in-depth study of the scriptures to grow in knowledge and understanding of God\'s word. We are currently studying the Book of Romans.</p><p><strong>Time:</strong> Every Tuesday, 6:00 PM - 7:30 PM</p><p><strong>Venue:</strong> Main Sanctuary</p>')">
                             <i class="fas fa-book-bible"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Tuesday Bible Study</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">A deep dive into scripture every Tuesday at 6:00 PM.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Friday Prayer Meeting', '<p>A time of corporate intercession for the church, the community, and personal needs. Come expecting a miracle!</p><p><strong>Time:</strong> Every Friday, 5:30 PM - 7:00 PM</p><p><strong>Theme:</strong> The Hour of Power.</p>')">
                             <i class="fas fa-praying-hands"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Friday Prayer Meeting</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Intercessory prayer meeting every Friday at 5:30 PM.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
-                        <div class="list-item">
+                        <div class="list-item" onclick="openInfoModal('Men & Women Fellowship', '<p>Fellowships designed to address specific needs of men and women in their walk with God. Includes mentorship, retreats, and community projects.</p><p><strong>Men\'s Meeting:</strong> 2nd Saturday of the month.</p><p><strong>Women\'s Meeting:</strong> Last Sunday of the month after service.</p>')">
                             <i class="fas fa-user-friends"></i>
-                            <div>
+                            <div class="list-item-content">
                                 <h4 style="font-family: var(--font-head);">Men's & Women's Fellowship</h4>
                                 <p style="font-size: 0.9rem; margin-top: 5px;">Monthly meetings specifically designed for mentorship and support.</p>
+                                <span class="view-details">More Info <i class="fas fa-arrow-right" style="margin-left:5px;"></i></span>
                             </div>
                         </div>
                     </div>
@@ -756,10 +878,24 @@
         <p>Designed by Philpeace &copy; <span id="mobile-year"></span></p>
     </div>
 
-    <!-- LIGHTBOX MODAL -->
+    <!-- IMAGE LIGHTBOX MODAL -->
     <div id="imageModal" class="modal" onclick="closeModal()">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="modalImg">
+    </div>
+
+    <!-- INFO MODAL (New) -->
+    <div id="infoModal" class="info-modal" onclick="closeInfoModal(event)">
+        <div class="info-modal-box" onclick="event.stopPropagation()">
+            <button class="info-modal-close" onclick="closeInfoModal()">&times;</button>
+            <div class="info-modal-header">
+                <i class="fas fa-info-circle"></i>
+                <h3 id="infoModalTitle">Title</h3>
+            </div>
+            <div class="info-modal-body" id="infoModalBody">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
     </div>
 
     <!-- SCRIPTS -->
@@ -771,7 +907,6 @@
         const aboutTriggerItem = document.querySelector('.dropdown-trigger-item');
         let isMenuOpen = false;
 
-        // Toggle Main Menu
         mobileToggle.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
@@ -782,23 +917,15 @@
             }
         });
 
-        // Toggle About Sub-Dropdown (Inside Mobile Menu)
         function toggleMobileAboutDropdown() {
             mobileAboutDropdown.classList.toggle('active');
             aboutTriggerItem.classList.toggle('active-trigger');
         }
 
-        // Unified Handler for Mobile Nav Clicks
         function handleMobileNavClick(pageId, tabId = null) {
-            // 1. Close the menu immediately
             closeMobileMenu();
-            
-            // 2. Switch Page
             switchPage(pageId);
-
-            // 3. If a tabId is provided (e.g., 'leadership'), switch to that specific tab
             if (tabId && pageId === 'about') {
-                // Small delay to allow page switch animation to start
                 setTimeout(() => {
                     switchAboutTab(tabId);
                 }, 100);
@@ -808,7 +935,7 @@
         function closeMobileMenu() {
             isMenuOpen = false;
             mobileMenu.classList.remove('open');
-            mobileAboutDropdown.classList.remove('active'); // Close sub-dropdown too
+            mobileAboutDropdown.classList.remove('active');
             aboutTriggerItem.classList.remove('active-trigger');
             mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
         }
@@ -866,19 +993,42 @@
             const target = document.getElementById(pageId);
             if(target) target.classList.add('active-view');
 
+            // Update Nav Links Active State
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             document.querySelectorAll('.b-nav-item').forEach(item => item.classList.remove('active'));
             
-            if(pageId === 'home') document.querySelector('.b-nav-item:nth-child(1)').classList.add('active');
-            if(pageId === 'sermons') document.querySelector('.b-nav-item:nth-child(2)').classList.add('active');
-            if(pageId === 'events') document.querySelector('.b-nav-item:nth-child(3)').classList.add('active');
-            if(pageId === 'about') document.querySelector('.b-nav-item:nth-child(4)').classList.add('active');
-            if(pageId === 'gallery') { /* Gallery mapped to home/last in nav logic if needed, currently simple */ }
+            // Highlight logic for Bottom Nav
+            if(pageId === 'home') {
+                document.querySelector('.b-nav-item:nth-child(1)').classList.add('active');
+                // Highlight top nav (using complex selector to target the span text or just the icon parent)
+                const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
+                if(topLinks[0]) topLinks[0].classList.add('active');
+            }
+            if(pageId === 'sermons') {
+                document.querySelector('.b-nav-item:nth-child(2)').classList.add('active');
+                const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
+                if(topLinks[1]) topLinks[1].classList.add('active');
+            }
+            if(pageId === 'events') {
+                document.querySelector('.b-nav-item:nth-child(3)').classList.add('active');
+                const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
+                if(topLinks[2]) topLinks[2].classList.add('active');
+            }
+            if(pageId === 'about') {
+                document.querySelector('.b-nav-item:nth-child(4)').classList.add('active');
+                // About is the 5th item in the new top nav structure
+                const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
+                if(topLinks[4]) topLinks[4].classList.add('active');
+            }
+            if(pageId === 'gallery') {
+                 const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
+                 if(topLinks[3]) topLinks[3].classList.add('active');
+            }
 
             window.scrollTo(0, 0);
         }
 
-        // --- 5. ABOUT TABS (Independent Sections) ---
+        // --- 5. ABOUT TABS ---
         function switchAboutTab(sectionId) {
             document.querySelectorAll('.about-section-block').forEach(sec => sec.classList.remove('active-block'));
             document.querySelectorAll('.about-tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -893,21 +1043,42 @@
             if(sectionId === 'programs') btns[3].classList.add('active');
         }
 
-        // --- 6. LIGHTBOX ---
-        const modal = document.getElementById('imageModal');
+        // --- 6. MODALS ---
+        // Image Modal
+        const imgModal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImg');
 
         function openModal(src) {
-            modal.style.display = "flex";
-            setTimeout(() => modal.classList.add('open'), 10);
+            imgModal.style.display = "flex";
+            setTimeout(() => imgModal.classList.add('open'), 10);
             modalImg.src = src;
         }
 
         function closeModal() {
-            modal.classList.remove('open');
-            setTimeout(() => modal.style.display = "none", 300);
+            imgModal.classList.remove('open');
+            setTimeout(() => imgModal.style.display = "none", 300);
         }
 
+        // Info Modal (New)
+        const infoModal = document.getElementById('infoModal');
+        const infoTitle = document.getElementById('infoModalTitle');
+        const infoBody = document.getElementById('infoModalBody');
+
+        function openInfoModal(title, bodyContent) {
+            infoTitle.textContent = title;
+            infoBody.innerHTML = bodyContent;
+            infoModal.style.display = "flex";
+            setTimeout(() => infoModal.classList.add('open'), 10);
+        }
+
+        function closeInfoModal(e) {
+            if(!e || e.target === infoModal) {
+                infoModal.classList.remove('open');
+                setTimeout(() => infoModal.style.display = "none", 300);
+            }
+        }
+
+        // Year
         document.getElementById('year').textContent = new Date().getFullYear();
         document.getElementById('mobile-year').textContent = new Date().getFullYear();
     </script>
