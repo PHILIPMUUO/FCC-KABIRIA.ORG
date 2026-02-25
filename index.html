@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Welcome to Faith Celebration Centre Kabiria. Join us for sermons, events, and community.">
+    <title>Faith Celebration Centre Kabiria</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="https://img.icons8.com/color/96/church.png" type="image/png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Bitter:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --primary: #0056b3;
+            --primary-dark: #004494;
+            --accent: #ffb703; /* Warm Gold */
+            --accent-hover: #fb8500;
+            --dark: #1a1a1a;
+            --light: #f4f7f6;
+            --white: #ffffff;
+            --text-body: #444;
+            --text-heading: #2c3e50;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.15);
+            --radius: 12px;
+            --trans: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            
+            --font-head: 'Montserrat', sans-serif;
+            --font-body: 'Bitter', serif;
+            
+            --header-height: 80px;
+            --mobile-nav-height: 70px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-body);
+            background-color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: var(--mobile-nav-height); /* Space for bottom nav */
+        }
+
+        @media (min-width: 769px) { body { padding-bottom: 0; } }
+
+        a { text-decoration: none; transition: var(--trans); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- 2. HEADER (Top Navbar) --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            height: var(--header-height); display: flex; align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            width: 90%; max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .brand { 
+            display: flex; align-items: center; gap: 10px; cursor: pointer;
+            font-family: var(--font-head);
+            font-weight: 900; /* Bold text as requested */
+            font-size: 1.1rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand i { font-size: 1.5rem; color: var(--accent); }
+
+        /* Desktop Nav */
+        .desktop-nav { display: flex; gap: 5px; align-items: center; }
+        @media (max-width: 768px) { .desktop-nav { display: none; } }
+
+        .nav-item { position: relative; }
+        
+        .nav-link {
+            font-family: var(--font-head); font-weight: 600; font-size: 0.95rem;
+            color: var(--dark); padding: 10px 15px; cursor: pointer;
+            border-radius: 6px; transition: var(--trans);
+        }
+        .nav-link:hover, .nav-link.active { background: rgba(0,86,179,0.1); color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 0;
+            background-color: var(--white); min-width: 200px;
+            box-shadow: var(--shadow-lg); border-radius: 8px;
+            padding: 10px 0; z-index: 1001; animation: fadeIn 0.2s ease;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a {
+            color: var(--text-body); padding: 12px 20px; text-decoration: none;
+            display: block; font-family: var(--font-head); font-size: 0.9rem;
+            transition: var(--trans);
+        }
+        .dropdown-content a:hover { background-color: var(--light); color: var(--primary); padding-left: 25px; }
+
+        /* Mobile Toggle Button */
+        .mobile-toggle {
+            display: none; background: transparent; border: none;
+            font-size: 1.5rem; color: var(--primary); cursor: pointer; z-index: 1002;
+        }
+        @media (max-width: 768px) { .mobile-toggle { display: block; } }
+
+        /* Mobile Full Menu Overlay (Top Navbar Menu) */
+        .mobile-menu-overlay {
+            position: fixed; top: var(--header-height); left: 0; width: 100%;
+            background: var(--white);
+            height: 0; /* Hidden by default */
+            overflow: hidden;
+            transition: height 0.4s ease-in-out;
+            z-index: 999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .mobile-menu-overlay.open { height: auto; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        
+        .mobile-link {
+            padding: 15px 30px;
+            font-family: var(--font-head);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--trans);
+        }
+        .mobile-link:active, .mobile-link:hover { background: #f9f9f9; color: var(--primary); padding-left: 40px; }
+
+        /* --- 3. PAGE SYSTEM --- */
+        main { flex: 1; margin-top: var(--header-height); position: relative; width: 100%; }
+        @media (max-width: 768px) { main { margin-top: var(--header-height); } }
+
+        .page-view {
+            display: none; width: 100%; min-height: calc(100vh - var(--header-height));
+            animation: fadeSlideUp 0.4s ease-out; background: var(--light);
+        }
+        @media (max-width: 768px) { .page-view { min-height: calc(100vh - 130px); } }
+        .page-view.active-view { display: block; }
+
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 4. HERO SECTION WITH WAVE & ROTATING TEXT --- */
+        #home-hero {
+            position: relative; height: 65vh; background-color: #003d80;
+            background-image: url('https://lh3.googleusercontent.com/sitesv/APaQ0SQeJZlGFYuPiqexrF6hAhpOoVqgAunAykm6swiM7Y3ExfgPbd4N6AoKPb-5zteXYscOs7L-xGYBkbu2YgGB5BK5sTobMbLlk8JPqL7aIR3gTj5fnRZCfskh_MYBQ512-vd_ud-qlguA4ankBib97TN3E8u3ymUGinGzLmcDDn9ZeYHxwO9XLGXePYk=w16383');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+            overflow: hidden;
+        }
+        
+        .hero-overlay {
+            position: absolute; inset: 0; background: rgba(0, 30, 80, 0.75); /* Darker blue for better text contrast */
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .hero-content { z-index: 2; max-width: 900px; }
+        .hero-title {
+            font-family: var(--font-head); font-size: 2.5rem; font-weight: 800;
+            margin-bottom: 15px; line-height: 1.1; text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 768px) { .hero-title { font-size: 1.8rem; } }
+
+        /* Rotating Text Container */
+        .rotating-text-wrapper {
+            height: 60px; /* Fixed height to prevent layout shift */
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .rotating-text {
+            font-family: var(--font-head); font-size: 1.2rem; font-weight: 500;
+            color: var(--accent);
+            animation: textFade 0.5s ease-in-out;
+        }
+        @media (max-width: 768px) { .rotating-text { font-size: 1rem; } }
+
+        @keyframes textFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* SEA WAVE EFFECT */
+        .waves {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 15vh;
+            min-height: 100px; max-height: 150px;
+            z-index: 3;
+        }
+        .parallax > use { animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite; }
+        .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; fill: rgba(255,255,255,0.7); }
+        .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; fill: rgba(255,255,255,0.5); }
+        .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; fill: rgba(255,255,255,0.3); }
+        .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; fill: #fff; }
+
+        @keyframes move-forever {
+            0% { transform: translate3d(-90px,0,0); }
+            100% { transform: translate3d(85px,0,0); }
+        }
+
+        /* --- 5. SCROLLING ANNOUNCEMENT --- */
+        .announcement-strip {
+            background: var(--accent); color: var(--dark);
+            padding: 12px 0; overflow: hidden; white-space: nowrap;
+            position: relative; z-index: 4; margin-top: -5px; /* Connect with wave */
+        }
+        .scroller-wrap {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 20s linear infinite;
+        }
+        .scroller-wrap span {
+            font-family: var(--font-head); font-weight: 700; font-size: 0.9rem;
+            margin-right: 50px; display: inline-block;
+        }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- 6. ENCOURAGEMENT STRIP (Rotating) --- */
+        .encouragement-wrapper {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white); text-align: center; padding: 60px 20px;
+            position: relative; overflow: hidden;
+        }
+        .encouragement-text {
+            font-family: var(--font-head); font-size: 1.3rem; font-weight: 600;
+            max-width: 800px; margin: 0 auto; font-style: italic; min-height: 60px;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+        .encouragement-author {
+            margin-top: 10px; font-size: 0.9rem; opacity: 0.8; font-weight: 400;
+        }
+
+        /* --- 7. COMPONENTS --- */
+        .home-section { padding: 60px 20px; max-width: 1100px; margin: 0 auto; }
+        .section-title { font-family: var(--font-head); font-size: 2rem; color: var(--text-heading); text-align: center; margin-bottom: 30px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 4px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
+
+        .about-short-wrapper { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
+        .about-short-text { flex: 1; min-width: 300px; }
+        .about-short-img { flex: 1; min-width: 300px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+        .about-short-img img { width: 100%; }
+
+        .video-feature-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
+        .video-feature-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .gallery-preview { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .preview-card { position: relative; aspect-ratio: 1/1; border-radius: var(--radius); overflow: hidden; cursor: pointer; box-shadow: var(--shadow-sm); }
+        .preview-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .preview-card:hover img { transform: scale(1.1); }
+        .see-more-card { background: var(--primary); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; transition: var(--trans); }
+        .see-more-card:hover { background: var(--primary-dark); transform: translateY(-5px); }
+        .see-more-card i { font-size: 2rem; margin-bottom: 10px; }
+
+        .map-wrapper { width: 100%; height: 350px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); background: #ddd; }
+        .map-wrapper iframe { width: 100%; height: 100%; border: 0; }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 28px; border-radius: 50px; font-family: var(--font-head);
+            font-weight: 700; text-transform: uppercase; font-size: 0.85rem; cursor: pointer;
+            transition: var(--trans); border: 2px solid transparent; display: inline-block;
+        }
+        .btn-primary { background: var(--accent); color: var(--dark); box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4); }
+        .btn-primary:active { transform: scale(0.95); }
+        .btn-outline { background: transparent; border-color: var(--white); color: var(--white); }
+        .btn-outline:hover { background: var(--white); color: var(--primary); }
+
+        /* --- 8. ABOUT PAGE TABS --- */
+        .about-sticky-nav {
+            background: var(--white); box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            padding: 15px 0; position: sticky; top: var(--header-height);
+            z-index: 90; margin-bottom: 30px;
+        }
+        @media (max-width: 768px) { .about-sticky-nav { top: var(--header-height); } }
+
+        .about-tabs { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 0 20px; }
+        .about-tab-btn {
+            background: #f0f0f0; border: none; padding: 10px 20px; border-radius: 30px;
+            font-family: var(--font-head); font-weight: 600; color: var(--text-body);
+            cursor: pointer; transition: var(--trans); font-size: 0.9rem;
+        }
+        .about-tab-btn.active { background: var(--primary); color: var(--white); box-shadow: 0 4px 10px rgba(0,86,179,0.3); }
+
+        .about-section-block { display: none; padding: 20px; animation: fadeSlideUp 0.4s ease; }
+        .about-section-block.active-block { display: block; }
+        .about-content-wrapper { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .vm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
+        .vm-card { background: #f9f9f9; padding: 25px; border-radius: var(--radius); text-align: center; border-top: 4px solid var(--primary); }
+        .vm-card h4 { color: var(--primary); font-family: var(--font-head); margin-bottom: 15px; font-size: 1.2rem; }
+        .leadership-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; text-align: center; margin-top: 30px; }
+        .leader-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 4px solid var(--accent); }
+        .list-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .list-item { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: var(--radius); display: flex; align-items: flex-start; gap: 15px; }
+        .list-item i { color: var(--accent); font-size: 1.5rem; margin-top: 3px; }
+
+        /* --- 9. FOOTER & BOTTOM NAV --- */
+        footer { background: var(--dark); color: #ccc; padding: 60px 0 30px; margin-top: auto; border-top: 5px solid var(--accent); }
+        @media (max-width: 768px) { footer { display: none; } .mobile-copyright { display: block; text-align: center; padding: 10px; font-size: 0.7rem; color: #999; background: #111; } }
+        @media (min-width: 769px) { .mobile-copyright { display: none; } }
+
+        .footer-content { width: 90%; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer-col h4 { color: var(--white); font-family: var(--font-head); margin-bottom: 20px; font-size: 1.1rem; }
+        .contact-info p { margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .contact-info i { color: var(--accent); width: 20px; text-align: center; }
+        .interactive-links { display: flex; gap: 15px; flex-wrap: wrap; }
+        .icon-wrapper { position: relative; background: rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--trans); }
+        .icon-wrapper:hover { background: var(--primary); transform: translateY(-3px); }
+        .icon-wrapper i { color: var(--white); font-size: 1.2rem; }
+        .icon-wrapper::after { content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) scale(0); background: var(--accent); color: var(--dark); padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; opacity: 0; transition: all 0.2s ease; pointer-events: none; font-family: var(--font-head); }
+        .icon-wrapper:hover::after { transform: translateX(-50%) scale(1); opacity: 1; bottom: 130%; }
+        .copyright { text-align: center; padding-top: 20px; font-size: 0.85rem; opacity: 0.6; }
+
+        /* Mobile Bottom Nav */
+        .mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: var(--mobile-nav-height); background: var(--white); box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; justify-content: space-around; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-bottom: env(safe-area-inset-bottom); }
+        @media (max-width: 768px) { .mobile-bottom-nav { display: flex; } }
+        .b-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; font-size: 0.7rem; cursor: pointer; width: 25%; height: 100%; transition: color 0.2s; }
+        .b-nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
+        .b-nav-item.active { color: var(--primary); }
+
+        /* --- MODAL --- */
+        .modal { position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        .modal.open { opacity: 1; }
+        .modal-content { max-width: 90%; max-height: 90%; border-radius: 4px; }
+        .close-modal { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER (Top Navbar) -->
+    <header>
+        <div class="nav-container">
+            <!-- Brand: Text + Icon -->
+            <div class="brand" onclick="switchPage('home')">
+                <i class="fas fa-church"></i> 
+                <span>FCC KABIRIA</span>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="desktop-nav">
+                <div class="nav-item"><div class="nav-link" onclick="switchPage('home')">Home</div></div>
+                <div class="nav-item"><div class="nav-link" onclick="switchPage('sermons')">Sermons</div></div>
+                <div class="nav-item"><div class="nav-link" onclick="switchPage('events')">Events</div></div>
+                <div class="nav-item"><div class="nav-link" onclick="switchPage('gallery')">Gallery</div></div>
+                <div class="nav-item dropdown">
+                    <div class="nav-link">About Us <i class="fas fa-chevron-down" style="font-size:0.7em; margin-left:5px;"></i></div>
+                    <div class="dropdown-content">
+                        <a onclick="switchPage('about'); switchAboutTab('overview')">Overview</a>
+                        <a onclick="switchPage('about'); switchAboutTab('leadership')">Leadership</a>
+                        <a onclick="switchPage('about'); switchAboutTab('departments')">Departments</a>
+                        <a onclick="switchPage('about'); switchAboutTab('programs')">Programs</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Mobile Toggle Button -->
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU OVERLAY (Swaps on click) -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-link" onclick="closeMobileMenu(); switchPage('home')">Home</div>
+        <div class="mobile-link" onclick="closeMobileMenu(); switchPage('sermons')">Sermons</div>
+        <div class="mobile-link" onclick="closeMobileMenu(); switchPage('events')">Events</div>
+        <div class="mobile-link" onclick="closeMobileMenu(); switchPage('gallery')">Gallery</div>
+        <div class="mobile-link" onclick="closeMobileMenu(); switchPage('about')">About Us</div>
+    </div>
+
+    <!-- MOBILE BOTTOM NAV (Quick Access) -->
+    <div class="mobile-bottom-nav">
+        <div class="b-nav-item active" onclick="switchPage('home')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="b-nav-item" onclick="switchPage('sermons')">
+            <i class="fas fa-play-circle"></i>
+            <span>Watch</span>
+        </div>
+        <div class="b-nav-item" onclick="switchPage('events')">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Events</span>
+        </div>
+        <div class="b-nav-item" onclick="switchPage('about')">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </div>
+    </div>
+
+    <main>
+        <!-- 1. HOME PAGE -->
+        <div id="home" class="page-view active-view">
+            <div id="home-hero">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <h1 class="hero-title">FAITH CELEBRATION CENTRE KABIRIA</h1>
+                        
+                        <!-- Rotating Text Section -->
+                        <div class="rotating-text-wrapper">
+                            <span id="hero-rotator" class="rotating-text"></span>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 5;">
+                            <div class="btn btn-primary" onclick="switchPage('sermons')">Watch Sermons</div>
+                            <div class="btn btn-outline" onclick="switchPage('events')">Plan a Visit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SVG Waves -->
+                <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                    <defs>
+                        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                    </defs>
+                    <g class="parallax">
+                        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Scrolling Announcement -->
+            <div class="announcement-strip">
+                <div class="scroller-wrap">
+                    <span><i class="fas fa-bullhorn"></i> WELCOME TO FCC KABIRIA: A PLACE OF LOVE AND HEALING</span>
+                    <span><i class="fas fa-star"></i> NEW SERMON SERIES: "THE WISDOM OF TIME" AVAILABLE NOW</span>
+                    <span><i class="fas fa-calendar"></i> JOIN US THIS SUNDAY FOR OUR SPECIAL LUNCH FELLOWSHIP</span>
+                    <span><i class="fas fa-praying-hands"></i> PRAYER MEETING EVERY FRIDAY AT 5:30 PM</span>
+                </div>
+            </div>
+
+            <section class="home-section">
+                <h2 class="section-title">Welcome Home</h2>
+                <div class="about-short-wrapper">
+                    <div class="about-short-text">
+                        <h3 style="color: var(--primary); margin-bottom: 15px; font-family: var(--font-head);">We are a family of believers.</h3>
+                        <p style="margin-bottom: 20px; font-size: 1rem;">At Faith Celebration Centre Kabiria, we believe that church isn't just a building you walk into, but a family you belong to. Whether you have been a Christian for years or are just starting to ask questions, you have a place here.</p>
+                        <div class="btn btn-primary" onclick="switchPage('about')">Read More</div>
+                    </div>
+                    <div class="about-short-img">
+                        <img src="https://picsum.photos/seed/churchfamily/600/400" alt="Church Family">
+                    </div>
+                </div>
+            </section>
+
+            <section class="home-section" style="background-color: #fff; border-radius: var(--radius); max-width: 100%;">
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <h2 class="section-title">Latest Message</h2>
+                    <div class="video-feature-container">
+                        <!-- Generic working video ID -->
+                        <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ?rel=0" title="Latest Sermon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p><strong>What A Beautiful Name</strong> - Hillsong Worship (Placeholder)</p>
+                        <br>
+                        <div class="btn btn-primary" onclick="switchPage('sermons')">View All Sermons</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="home-section">
+                <h2 class="section-title">Community Moments</h2>
+                <div class="gallery-preview">
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal1/600/600')">
+                        <img src="https://picsum.photos/seed/gal1/300/300" alt="Worship">
+                    </div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal2/600/600')">
+                        <img src="https://picsum.photos/seed/gal2/300/300" alt="Youth">
+                    </div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal3/600/600')">
+                        <img src="https://picsum.photos/seed/gal3/300/300" alt="Outreach">
+                    </div>
+                    <div class="preview-card see-more-card" onclick="switchPage('gallery')">
+                        <i class="fas fa-images"></i>
+                        <h4>See All</h4>
+                    </div>
+                </div>
+            </section>
+
+            <section class="home-section">
+                <h2 class="section-title">Find Us</h2>
+                <div class="map-wrapper">
+                    <iframe src="https://maps.google.com/maps?q=Faith+Celebration+Centre+Kabiria&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+            </section>
+
+            <!-- Encouragement Strip (Rotating) -->
+            <div class="encouragement-wrapper">
+                <div class="encouragement-text" id="encouragement-text"></div>
+                <div class="encouragement-author" id="encouragement-author"></div>
+            </div>
+        </div>
+
+        <!-- 2. SERMONS PAGE -->
+        <div id="sermons" class="page-view">
+            <div class="home-section">
+                <h2 class="section-title">Sermon Archive</h2>
+                <div class="vm-grid">
+                    <div class="sermon-card">
+                        <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/LXb3EKWsInQ?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                        <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">Wisdom of Time Premiere</h3><p style="font-size:0.9rem; color:#666;">Understanding God's timing.</p></div>
+                    </div>
+                    <div class="sermon-card">
+                        <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/LXb3EKWsInQ?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                        <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">The Wisdom of Time</h3><p style="font-size:0.9rem; color:#666;">Unlocking divine seasons.</p></div>
+                    </div>
+                    <div class="sermon-card">
+                        <div class="video-feature-container"><iframe src="https://www.youtube.com/embed/LXb3EKWsInQ?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                        <div style="padding: 15px; background: white; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm);"><h3 style="font-family: var(--font-head);">Fixing Our Eyes on Christ</h3><p style="font-size:0.9rem; color:#666;">Focusing on Jesus.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. EVENTS PAGE -->
+        <div id="events" class="page-view">
+            <div class="home-section">
+                <h2 class="section-title">Upcoming Events</h2>
+                <div style="background: white; padding: 30px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow-sm);">
+                    <h3 style="color: var(--primary); font-family: var(--font-head);">New Month Celebration</h3>
+                    <p style="margin: 20px 0;">Join us this Sunday for a time of praise, worship, and a special lunch fellowship afterwards.</p>
+                    <div class="video-feature-container" style="max-width: 800px; margin: 0 auto;">
+                        <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. GALLERY PAGE -->
+        <div id="gallery" class="page-view">
+            <div class="home-section">
+                <h2 class="section-title">Full Gallery</h2>
+                <div class="gallery-preview" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal1/800/800')"><img src="https://picsum.photos/seed/gal1/300/300" alt="Img"></div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal2/800/800')"><img src="https://picsum.photos/seed/gal2/300/300" alt="Img"></div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal3/800/800')"><img src="https://picsum.photos/seed/gal3/300/300" alt="Img"></div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal4/800/800')"><img src="https://picsum.photos/seed/gal4/300/300" alt="Img"></div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal5/800/800')"><img src="https://picsum.photos/seed/gal5/300/300" alt="Img"></div>
+                    <div class="preview-card" onclick="openModal('https://picsum.photos/seed/gal6/800/800')"><img src="https://picsum.photos/seed/gal6/300/300" alt="Img"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ABOUT PAGE -->
+        <div id="about" class="page-view">
+            <div class="about-sticky-nav">
+                <div class="about-tabs">
+                    <button class="about-tab-btn active" onclick="switchAboutTab('overview')">Overview</button>
+                    <button class="about-tab-btn" onclick="switchAboutTab('leadership')">Leadership</button>
+                    <button class="about-tab-btn" onclick="switchAboutTab('departments')">Departments</button>
+                    <button class="about-tab-btn" onclick="switchAboutTab('programs')">Programs</button>
+                </div>
+            </div>
+
+            <section id="about-overview" class="about-section-block active-block">
+                <div class="about-content-wrapper">
+                    <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 20px; text-align: center;">Who We Are</h2>
+                    <p style="text-align: center; max-width: 700px; margin: 0 auto 40px; font-size: 1.1rem;">We exist to share the love of Jesus, serve our local community, and grow together in faith.</p>
+                    
+                    <div class="vm-grid">
+                        <div class="vm-card">
+                            <i class="fas fa-eye" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                            <h4>Our Vision</h4>
+                            <p>To be a global voice of hope and a center of Christian excellence, raising leaders who influence their generation for Christ.</p>
+                        </div>
+                        <div class="vm-card">
+                            <i class="fas fa-bullseye" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                            <h4>Our Mission</h4>
+                            <p>Empowering believers through the Word, Worship, and Works of service to impact the world with the Gospel of Jesus Christ.</p>
+                        </div>
+                        <div class="vm-card">
+                            <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                            <h4>Core Values</h4>
+                            <p>We uphold Integrity, Compassion, Excellence, and Faith in God as the pillars of our ministry and daily lives.</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 50px; border: 1px solid #eee; padding: 30px; border-radius: var(--radius);">
+                        <h3 style="text-align: center; font-family: var(--font-head); margin-bottom: 25px; color: var(--text-heading);">What We Believe</h3>
+                        <ul style="list-style: disc; padding-left: 20px; line-height: 2; font-size: 1rem;">
+                            <li><strong>The Bible:</strong> We believe the Bible is the inspired Word of God, authoritative and infallible.</li>
+                            <li><strong>The Trinity:</strong> We believe in one God revealed as Father, Son, and Holy Spirit.</li>
+                            <li><strong>Jesus Christ:</strong> We believe in the deity of Jesus Christ, His virgin birth, His sinless life, and His physical resurrection.</li>
+                            <li><strong>Salvation:</strong> We believe salvation is by grace through faith in Jesus Christ alone, not by works.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about-leadership" class="about-section-block">
+                <div class="about-content-wrapper">
+                    <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Our Leadership</h2>
+                    <div class="leadership-grid">
+                        <div>
+                            <img src="https://picsum.photos/seed/pastor1/200/200" alt="Rev James" class="leader-img">
+                            <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Rev. James Maina</h4>
+                            <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Senior Pastor</p>
+                        </div>
+                        <div>
+                            <img src="https://picsum.photos/seed/pastor2/200/200" alt="Rev Naomi" class="leader-img">
+                            <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Rev. Naomi Maina</h4>
+                            <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Co-Pastor</p>
+                        </div>
+                        <div>
+                            <img src="https://picsum.photos/seed/pastor3/200/200" alt="Elder" class="leader-img">
+                            <h4 style="font-family: var(--font-head); font-size: 1.2rem;">Elder John Doe</h4>
+                            <p style="font-size: 0.95rem; color: #666; font-weight: 600;">Church Elder</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about-departments" class="about-section-block">
+                <div class="about-content-wrapper">
+                    <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Our Departments</h2>
+                    <div class="list-grid">
+                        <div class="list-item">
+                            <i class="fas fa-music"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Music & Worship Ministry</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Leading the congregation in praise and creating an atmosphere for God's presence.</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <i class="fas fa-child"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Children's Ministry</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Nurturing the next generation in the ways of the Lord with fun and biblical teaching.</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Ushering & Hospitality</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Ensuring order, comfort, and a warm welcome for everyone visiting the church.</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <i class="fas fa-hands-helping"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Welfare & Outreach</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Serving the community needs through charity and support programs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about-programs" class="about-section-block">
+                <div class="about-content-wrapper">
+                    <h2 style="font-family: var(--font-head); color: var(--primary); margin-bottom: 30px; text-align: center;">Weekly Programs</h2>
+                    <div class="list-grid">
+                        <div class="list-item">
+                            <i class="fas fa-book-bible"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Tuesday Bible Study</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">A deep dive into scripture every Tuesday at 6:00 PM.</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <i class="fas fa-praying-hands"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Friday Prayer Meeting</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Intercessory prayer meeting every Friday at 5:30 PM.</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <i class="fas fa-user-friends"></i>
+                            <div>
+                                <h4 style="font-family: var(--font-head);">Men's & Women's Fellowship</h4>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">Monthly meetings specifically designed for mentorship and support.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col contact-info">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Kabiria, Nairobi, Kenya</p>
+                <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                <p><i class="fas fa-envelope"></i> info@fcckabiria.org</p>
+                <p><i class="fas fa-clock"></i> Sun: 9:30 AM - 1:30 PM</p>
+            </div>
+            <div class="footer-col">
+                <h4>Faith Celebration Centre</h4>
+                <p style="font-size: 0.9rem; opacity: 0.8;">A vibrant community committed to spreading the love of Christ through worship, fellowship, and service to the Kabiria neighborhood and beyond.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <div class="interactive-links">
+                    <div class="icon-wrapper" data-tooltip="Home" onclick="switchPage('home')"><i class="fas fa-home"></i></div>
+                    <div class="icon-wrapper" data-tooltip="Sermons" onclick="switchPage('sermons')"><i class="fas fa-play"></i></div>
+                    <div class="icon-wrapper" data-tooltip="Events" onclick="switchPage('events')"><i class="fas fa-calendar"></i></div>
+                    <div class="icon-wrapper" data-tooltip="Gallery" onclick="switchPage('gallery')"><i class="fas fa-camera"></i></div>
+                    <div class="icon-wrapper" data-tooltip="About Us" onclick="switchPage('about')"><i class="fas fa-info-circle"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>Designed by Philpeace &copy; <span id="year"></span>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div class="mobile-copyright">
+        <p>Designed by Philpeace &copy; <span id="mobile-year"></span></p>
+    </div>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- 1. MOBILE TOP NAVBAR TOGGLE ---
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+
+        mobileToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.add('open');
+                mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                mobileMenu.classList.remove('open');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('open');
+            mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+
+        // --- 2. HERO TEXT ROTATOR (Vision, Mission, Verse, Encouragement) ---
+        const heroTexts = [
+            { text: "Vision: To be a global voice of hope.", author: "" },
+            { text: "Mission: Empowering believers through Word, Worship, & Works.", author: "" },
+            { text: "Theme Verse: Jeremiah 29:11 - 'For I know the plans I have for you...'", author: "" },
+            { text: "Encouragement: Be strong and courageous. Do not be afraid.", author: "Joshua 1:9" }
+        ];
+        let heroIndex = 0;
+        const heroElement = document.getElementById('hero-rotator');
+
+        function updateHeroText() {
+            // Fade out
+            heroElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                heroIndex = (heroIndex + 1) % heroTexts.length;
+                heroElement.textContent = heroTexts[heroIndex].text;
+                // Fade in
+                heroElement.style.opacity = 1;
+            }, 500); // Wait for fade out
+        }
+
+        // Set initial text
+        heroElement.textContent = heroTexts[0].text;
+        setInterval(updateHeroText, 4000); // Change every 4 seconds
+
+        // --- 3. ENCOURAGEMENT STRIP ROTATOR (3 Quotes) ---
+        const encouragementQuotes = [
+            { text: "\"The steadfast love of the Lord never ceases; his mercies never come to an end.\"", author: "Lamentations 3:22" },
+            { text: "\"I can do all things through him who gives me strength.\"", author: "Philippians 4:13" },
+            { text: "\"For God so loved the world, that he gave his only Son.\"", author: "John 3:16" }
+        ];
+        let encIndex = 0;
+        const encTextEl = document.getElementById('encouragement-text');
+        const encAuthEl = document.getElementById('encouragement-author');
+
+        function updateEncouragement() {
+            encTextEl.style.opacity = 0;
+            encAuthEl.style.opacity = 0;
+
+            setTimeout(() => {
+                encIndex = (encIndex + 1) % encouragementQuotes.length;
+                encTextEl.textContent = encouragementQuotes[encIndex].text;
+                encAuthEl.textContent = encouragementQuotes[encIndex].author;
+                encTextEl.style.opacity = 1;
+                encAuthEl.style.opacity = 0.8;
+            }, 500);
+        }
+
+        // Set initial
+        encTextEl.textContent = encouragementQuotes[0].text;
+        encAuthEl.textContent = encouragementQuotes[0].author;
+        setInterval(updateEncouragement, 5000);
+
+        // --- 4. PAGE SWITCHING ---
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active-view'));
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active-view');
+
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.b-nav-item').forEach(item => item.classList.remove('active'));
+            
+            if(pageId === 'home') document.querySelector('.b-nav-item:nth-child(1)').classList.add('active');
+            if(pageId === 'sermons') document.querySelector('.b-nav-item:nth-child(2)').classList.add('active');
+            if(pageId === 'events') document.querySelector('.b-nav-item:nth-child(3)').classList.add('active');
+            if(pageId === 'about') document.querySelector('.b-nav-item:nth-child(4)').classList.add('active');
+
+            window.scrollTo(0, 0);
+            closeMobileMenu();
+        }
+
+        // --- 5. ABOUT TABS ---
+        function switchAboutTab(sectionId) {
+            document.querySelectorAll('.about-section-block').forEach(sec => sec.classList.remove('active-block'));
+            document.querySelectorAll('.about-tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('about-' + sectionId);
+            if(target) target.classList.add('active-block');
+
+            const btns = document.querySelectorAll('.about-tab-btn');
+            if(sectionId === 'overview') btns[0].classList.add('active');
+            if(sectionId === 'leadership') btns[1].classList.add('active');
+            if(sectionId === 'departments') btns[2].classList.add('active');
+            if(sectionId === 'programs') btns[3].classList.add('active');
+        }
+
+        // --- 6. LIGHTBOX ---
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+
+        function openModal(src) {
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add('open'), 10);
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            setTimeout(() => modal.style.display = "none", 300);
+        }
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('mobile-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
