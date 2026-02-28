@@ -38,7 +38,7 @@
             --font-head: 'Montserrat', sans-serif;
             --font-body: 'Bitter', serif;
             
-            --header-height: 75px; /* Slightly increased for icon nav */
+            --header-height: 75px;
             --mobile-nav-height: 70px;
         }
 
@@ -79,23 +79,32 @@
             height: 100%;
         }
 
+        /* FIXED BRAND AREA */
         .brand { 
-            display: flex; align-items: center; gap: 10px; cursor: pointer;
-            font-family: var(--font-head);
-            font-weight: 900; 
-            font-size: 1rem; 
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            cursor: pointer;
+            height: 100%;
             flex-shrink: 0;
         }
         
-        .brand i { font-size: 1.4rem; color: var(--accent); }
+        /* Styles specifically for the logo image */
+        .brand-logo-img {
+            height: 50px; /* Adjusted height for better fit */
+            width: auto;
+            object-fit: contain;
+            transition: var(--trans);
+        }
+        
+        .brand:hover .brand-logo-img {
+            transform: scale(1.02);
+        }
 
-        /* Desktop Nav - Redesigned to match Bottom Nav style */
+        /* Desktop Nav */
         .desktop-nav { 
             display: flex; 
-            justify-content: flex-end; /* Push to right of brand */
+            justify-content: flex-end;
             align-items: center; 
             height: 100%;
             flex: 1;
@@ -108,7 +117,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center;
-            flex: 1; /* Spread items evenly */
+            flex: 1;
             max-width: 100px;
         }
         
@@ -327,7 +336,7 @@
         .about-section-block { display: none; padding: 20px; animation: fadeSlideUp 0.4s ease; }
         .about-section-block.active-block { display: block; }
         .about-content-wrapper { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .vm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
+        .vm-grid { display: grid; grid-template-columns: repeat(auto-fit, min-width(250px, 1fr)); gap: 25px; margin-top: 30px; }
         .vm-card { background: #f9f9f9; padding: 25px; border-radius: var(--radius); text-align: center; border-top: 4px solid var(--primary); }
         .vm-card h4 { color: var(--primary); font-family: var(--font-head); margin-bottom: 15px; font-size: 1.2rem; }
         
@@ -427,13 +436,13 @@
     <!-- HEADER (Top Navbar - Icon Style) -->
     <header>
         <div class="nav-container">
+            <!-- FIXED BRAND SECTION -->
             <div class="brand" onclick="handleMobileNavClick('home')">
-                <i class="fas fa-church"></i> 
-                <span>FCC KABIRIA</span>
+                <!-- I replaced the text/icon with the image. 
+                     If you have 'logo.png' in your folder, it will show.
+                     Otherwise, it shows the placeholder. -->
+                <img src="logo.png" alt="Faith Celebration Centre Logo" class="brand-logo-img" onerror="this.src='https://placehold.co/200x60/0056b3/ffb703?text=FCC+LOGO&font=montserrat'; this.style.onerror=null;">
             </div>
-            <a href="https://github.com/PHILIPMUUO/FCC-KABIRIA.ORG/blob/main/LOGO.png">
-                <img src="logo.png" alt=" Logo" width="100" height="50">
-            </a>
 
             <!-- Desktop Nav (Icon Style) -->
             <nav class="desktop-nav">
@@ -1003,7 +1012,6 @@
             // Highlight logic for Bottom Nav
             if(pageId === 'home') {
                 document.querySelector('.b-nav-item:nth-child(1)').classList.add('active');
-                // Highlight top nav (using complex selector to target the span text or just the icon parent)
                 const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
                 if(topLinks[0]) topLinks[0].classList.add('active');
             }
@@ -1019,7 +1027,6 @@
             }
             if(pageId === 'about') {
                 document.querySelector('.b-nav-item:nth-child(4)').classList.add('active');
-                // About is the 5th item in the new top nav structure
                 const topLinks = document.querySelectorAll('.desktop-nav .nav-link');
                 if(topLinks[4]) topLinks[4].classList.add('active');
             }
@@ -1087,4 +1094,3 @@
     </script>
 </body>
 </html>
-
